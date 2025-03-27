@@ -10,6 +10,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // Inject all dependencies
   await MainInjector.init();
+  AppRouter.init();
   runApp(const MyApp());
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
@@ -21,11 +22,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Ny Times Articles App',
       debugShowCheckedModeBanner: false,
-      navigatorKey: navigatorKey,
-      onGenerateRoute: AppRouter.generateRoute,
+      routerConfig: AppRouter.baseRouters,
     );
   }
 }

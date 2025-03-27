@@ -1,3 +1,9 @@
+import 'package:flutter_learnings/data/data_sources/local_src.dart';
+import 'package:flutter_learnings/data/data_sources/local_src_impl.dart';
+import 'package:flutter_learnings/data/repositories/sample_repository_impl.dart';
+import 'package:flutter_learnings/domain/repository/sample_repository.dart';
+import 'package:flutter_learnings/domain/usecases/get_data_stream_case.dart';
+import 'package:flutter_learnings/presentation/bloc/sample_bloc.dart';
 import 'package:get_it/get_it.dart' show GetIt;
 
 class MainInjector {
@@ -7,7 +13,7 @@ class MainInjector {
 
   static init() async {
     //define all injectors
-
+    await FeatureInjector.init();
     await MainInjector.instance.allReady();
   }
 
@@ -27,20 +33,17 @@ class FeatureInjector {
     final injector = MainInjector.instance;
 
     /// define all bloc
-    // injector.registerFactory(() => ArticlesBloc(articlesUseCase: injector()));
+    injector.registerFactory(() => SampleBloc(getDataStreamCase: injector()));
 
     /// define all use case
-    //  injector.registerLazySingleton(() => ArticlesUseCase(injector()));
+    injector.registerLazySingleton(() => GetDataStreamCase(injector()));
 
     /// define all repos
-    // injector.registerLazySingleton<ArticleRepository>(
-    //   () => ArticleRepositoryImpl(injector()),
-    // );
-
+    injector.registerLazySingleton<SampleRepository>(
+      () => SampleRepositoryImpl(injector()),
+    );
 
     /// define all local
-    // injector.registerLazySingleton<ArticleRemote>(
-    //       () => ArticleRemoteImpl(DioNetwork.appAPI),
-    // );
+    injector.registerLazySingleton<LocalSrc>(() => LocalSrcImpl());
   }
 }

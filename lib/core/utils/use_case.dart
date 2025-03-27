@@ -7,7 +7,7 @@ abstract class FutureUseCase<T, Params> {
 }
 
 abstract class StreamUseCase<T, Params> {
-  Stream<Either<Failure, T>> call(Params params);
+  Stream<T> call(Params params);
 }
 
 class NoParams {}
